@@ -1,7 +1,7 @@
 "use client";
 import { SignInButton, useUser, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
-import Complimate from "@/public/24х24.svg"
+import Complimate from "@/public/из люстры_2.svg"
 import { useFullURL } from "@/hooks/use-full-url";
 import { useEffect, useState } from "react";
 

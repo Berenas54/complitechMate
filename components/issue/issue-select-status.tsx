@@ -58,6 +58,8 @@ type StatusMap = {
 export const statusMap: StatusMap = {
   DONE: "DONE",
   IN_PROGRESS: "IN PROGRESS",
+  READY_FOR_TESTING: "READY FOR TESTING",
+  TESTING: "TESTING",
   TODO: "TO DO",
 };
 

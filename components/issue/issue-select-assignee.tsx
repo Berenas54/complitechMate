@@ -105,7 +105,9 @@ const IssueAssigneeSelect: React.FC<{
                         alt={`${member?.name ?? "Unassigned"}`}
                       />
                       <span className="rounded-md bg-opacity-30 px-2 text-sm">
-                        {member.name}
+                        {member.name}  <span className="inline-flex items-center justify-center w-6 h-6 text-white bg-blue-500 rounded-full">
+    {member.name.length}
+  </span>
                       </span>
                     </div>
                   </SelectItem>

@@ -9,12 +9,12 @@ export const useProject = () => {
   );
   const { data: members } = useQuery(
     ["project-members"],
-    () => api.project.getMembers({ project_id: project?.id ?? "" }),
+    () => api.project.getMembers({ project_id: "init-project-id-dq8yh-d0as89hjd" }),
     {
-      enabled: !!project?.id,
+      enabled: !!"init-project-id-dq8yh-d0as89hjd",
     }
   );
-
+console.log(members,"members")
   return {
     project,
     projectIsLoading,

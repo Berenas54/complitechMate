@@ -38,6 +38,27 @@ const BoardIcon: React.FC<{ className?: string; size?: number }> = ({
     </svg>
   );
 };
+
+const ProjectIcon: React.FC<{ className?: string; size?: number }> = ({
+  className,
+  size,
+}) => {
+  return (
+    <svg
+      className={className}
+      width={size ?? 24}
+      height={size ?? 24}
+      viewBox="0 0 24 24"
+      role="presentation"
+    >
+      <path
+        d="M16 2C14.7422 2 13.8594 2.89453 13.418 4H7C5.89543 4 5 4.89543 5 6V27C5 28.1046 5.89543 29 7 29H25C26.1046 29 27 28.1046 27 27V6C27 4.89543 26.1046 4 25 4H18.582C18.1406 2.89453 17.2578 2 16 2ZM16 4C16.5664 4 17 4.43359 17 5V6H20V8H12V6H15V5C15 4.43359 15.4336 4 16 4ZM7 8C7 6.89543 7.89543 6 9 6H10V10H22V6H23C24.1046 6 25 6.89543 25 8V25C25 26.1046 24.1046 27 23 27H9C7.89543 27 7 26.1046 7 25V8ZM22.293 12.293L20 14.5859L18.707 13.293L17.293 14.707L20 17.4141L23.707 13.707L22.293 12.293ZM9 14V16H16V14H9ZM22.293 19.293L20 21.5859L18.707 20.293L17.293 21.707L20 24.4141L23.707 20.707L22.293 19.293ZM9 21V23H16V21H9Z"
+        fill="black"
+      />
+    </svg>
+  );
+};
+
 const BacklogIcon: React.FC<{ className?: string; size?: number }> = ({
   className,
   size,
@@ -477,6 +498,7 @@ export {
   ChildrenTreeIcon,
   BacklogIcon,
   BoardIcon,
+  ProjectIcon,
   RoadmapIcon,
   LightningIcon,
   DevelopmentIcon,

@@ -1,5 +1,5 @@
 "use client";
-import React, { Fragment, useCallback, useLayoutEffect, useRef } from "react";
+import React, { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { type IssueStatus } from "@prisma/client";
 import "@/styles/split.css";
 import { BoardHeader } from "./header";
@@ -12,7 +12,7 @@ import { useIssues } from "@/hooks/query-hooks/use-issues";
 import { type IssueType } from "@/utils/types";
 import {
   assigneeNotInFilters,
-  epicNotInFilters,
+  epicNotInFilters, getPluralEnd,
   insertItemIntoArray,
   isEpic,
   isNullish,
@@ -20,7 +20,7 @@ import {
   issueNotInSearch,
   issueSprintNotInFilters,
   issueTypeNotInFilters,
-  moveItemWithinArray,
+  moveItemWithinArray
 } from "@/utils/helpers";
 import { IssueList } from "./issue-list";
 import { IssueDetailsModal } from "../modals/board-issue-details";
@@ -28,14 +28,127 @@ import { useSprints } from "@/hooks/query-hooks/use-sprints";
 import { useProject } from "@/hooks/query-hooks/use-project";
 import { useFiltersContext } from "@/context/use-filters-context";
 import { useIsAuthenticated } from "@/hooks/use-is-authed";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import { FaChevronRight } from "react-icons/fa";
 
-const STATUSES: IssueStatus[] = ["TODO", "IN_PROGRESS", "DONE"];
+const STATUSES: IssueStatus[] = ["TODO", "IN_PROGRESS","READY_FOR_TESTING", "TESTING","DONE"];
 
 const Board: React.FC = () => {
   const renderContainerRef = useRef<HTMLDivElement>(null);
 
   const { issues } = useIssues();
+  console.log(issues,"issues")
+  const fakeIssues = [{
+      id: "1c581sd8e1-b920-45b2-2oqFNIK",
+      key: "ISSUE-122",
+      name: "work again",
+      description: null,
+      status: "IN_PROGRESS",
+      type: "TASK",
+      sprintPosition: 1,
+      boardPosition: 1,
+      reporterId: "user_2PwZmH2xP5aE0svR6hDH4AwDlcu",
+      assigneeId: null,
+      parentId: "b6e4ace2-6911-40c6-2oqFNIK",
+      sprintId: "880ececc-f628-4de3-2oqFNIK",
+      isDeleted: false,
+      createdAt: "2024-11-14T13:00:46.065Z",
+      updatedAt: "2024-11-14T13:00:46.065Z",
+      deletedAt: null,
+      sprintColor: null,
+      creatorId: "user_2oqFNIKcHH3xEWKwM3BJ7E1kXdn",
+      sprintIsActive: false,
+      parent: {
+          id: "b6e4ace2-6911-40c6-2oqFNIK",
+          key: "ISSUE-5",
+          name: "Think Different Odyssey",
+          description: null,
+          status: "TODO",
+          type: "EPIC",
+          sprintPosition: 2,
+          boardPosition: -1,
+          reporterId: "user_2PwZmH2xP5aE0svR6hDH4AwDlcu",
+          assigneeId: null,
+          parentId: null,
+          sprintId: null,
+          isDeleted: false,
+          createdAt: "2024-11-14T13:00:46.065Z",
+          updatedAt: "2024-11-14T13:00:46.065Z",
+          deletedAt: null,
+          sprintColor: "#0b66e4",
+          creatorId: "user_2oqFNIKcHH3xEWKwM3BJ7E1kXdn"
+      },
+      assignee: null,
+      reporter: null,
+      children: []
+  },{
+    id: "172c209d-6e7d9-4478-bda4-5d635831e459",
+    key: "ISSUE-17",
+    name: "work again",
+    description: null,
+    status: "IN_PROGRESS",
+    type: "TASK",
+    sprintPosition: 5,
+    boardPosition: 1,
+    reporterId: "user_2oqFNIKcHH3xEWKwM3BJ7E1kXdn",
+    assigneeId: null,
+    parentId: "70c4152c-2063-47ad-2oqFNIK",
+    sprintId: "edd0e2b1-b230-4f02-2oqFNIK",
+    isDeleted: false,
+    createdAt: "2024-11-15T08:40:34.767Z",
+    updatedAt: "2024-11-15T08:42:04.177Z",
+    deletedAt: null,
+    sprintColor: null,
+    creatorId: "user_2oqFNIKcHH3xEWKwM3BJ7E1kXdn",
+    assignee: null,
+    sprintIsActive: true,
+    parent: {
+      id: "70c4152c-2063-47ad-2oqFNIK",
+      key: "ISSUE-10",
+      name: "Visionary Ventures",
+      description: null,
+      status: "TODO",
+      type: "EPIC",
+      sprintPosition: 6,
+      boardPosition: -1,
+      reporterId: "user_2PwZmH2xP5aE0svR6hDH4AwDlcu",
+      assigneeId: null,
+      parentId: null,
+      sprintId: null,
+      isDeleted: false,
+      createdAt: "2024-11-14T13:00:46.065Z",
+      updatedAt: "2024-11-14T13:00:46.065Z",
+      deletedAt: null,
+      sprintColor: "#f97463",
+      creatorId: "user_2oqFNIKcHH3xEWKwM3BJ7E1kXdn"
+    },
+    reporter: null,
+    children: [
+      {
+        id: "f2a40f22-d23e-4ebf-95a4-553d7cbf9e54",
+        key: "ISSUE-15",
+        name: "4",
+        description: null,
+        status: "TODO",
+        type: "SUBTASK",
+        sprintPosition: 8,
+        boardPosition: -1,
+        reporterId: "user_2PwZmH2xP5aE0svR6hDH4AwDlcu",
+        assigneeId: null,
+        parentId: "172c209d-6e79-4478-bda4-5d635831e459",
+        sprintId: null,
+        isDeleted: false,
+        createdAt: "2024-11-15T08:42:45.261Z",
+        updatedAt: "2024-11-15T08:42:45.261Z",
+        deletedAt: null,
+        sprintColor: null,
+        creatorId: "user_2oqFNIKcHH3xEWKwM3BJ7E1kXdn",
+        assignee: null
+      }
+    ]
+  }]
   const { sprints } = useSprints();
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { project } = useProject();
   const {
     search,
@@ -73,7 +186,12 @@ const Board: React.FC = () => {
   );
 
   const { updateIssue } = useIssues();
+  const [openAccordion, setOpenAccordion] = useState("")
+  const [openAccordion1, setOpenAccordion1] = useState("")
   const [isAuthenticated, openAuthModal] = useIsAuthenticated();
+  useEffect(() => {
+    setOpenAccordion(project.id); // Open accordion on mount in order for DND to work.
+  }, [project.id])
 
   useLayoutEffect(() => {
     if (!renderContainerRef.current) return;
@@ -109,20 +227,90 @@ const Board: React.FC = () => {
     <Fragment>
       <IssueDetailsModal />
       <BoardHeader project={project} />
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div
-          ref={renderContainerRef}
-          className="relative flex w-full max-w-full gap-x-4 overflow-y-auto"
-        >
-          {STATUSES.map((status) => (
-            <IssueList
-              key={status}
-              status={status}
-              issues={filterIssues(issues, status)}
-            />
-          ))}
-        </div>
-      </DragDropContext>
+
+      <Accordion
+        onValueChange={setOpenAccordion}
+        value={openAccordion}
+        className="overflow-hidden rounded-lg bg-gray-100 p-2"
+        type="single"
+        collapsible
+      >
+        <AccordionItem value={project.id}>
+          <AccordionTrigger className="flex w-full items-center font-medium [&[data-state=open]>svg]:rotate-90">
+            <Fragment>
+              <FaChevronRight
+                className="mr-2 text-xs text-black transition-transform"
+                aria-hidden
+              />
+              <div className="flex items-center gap-x-2">
+                <div className="text-semibold whitespace-nowrap">
+                  {project.name}
+                </div>
+                <div className="flex items-center gap-x-3 whitespace-nowrap font-normal text-gray-500">
+                </div>
+              </div>
+            </Fragment>
+          </AccordionTrigger>
+          <AccordionContent>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <div
+                ref={renderContainerRef}
+                className="relative flex w-full max-w-full gap-x-4 overflow-y-auto"
+              >
+                {STATUSES.map((status) => (
+                  <IssueList
+                    key={status}
+                    status={status}
+                    issues={filterIssues(issues, status)}
+                  />
+                ))}
+              </div>
+            </DragDropContext>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+      <div className="h-2"/>
+      <Accordion
+        onValueChange={setOpenAccordion1}
+        value={openAccordion1}
+        className="overflow-hidden rounded-lg bg-gray-100 p-2"
+        type="single"
+        collapsible
+      >
+        <AccordionItem value={"Sentinel Hub"}>
+          <AccordionTrigger className="flex w-full items-center font-medium [&[data-state=open]>svg]:rotate-90">
+            <Fragment>
+              <FaChevronRight
+                className="mr-2 text-xs text-black transition-transform"
+                aria-hidden
+              />
+              <div className="flex items-center gap-x-2">
+                <div className="text-semibold whitespace-nowrap">
+                  Sentinel Hub
+                </div>
+                <div className="flex items-center gap-x-3 whitespace-nowrap font-normal text-gray-500">
+                </div>
+              </div>
+            </Fragment>
+          </AccordionTrigger>
+          <AccordionContent>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <div
+                ref={renderContainerRef}
+                className="relative flex w-full max-w-full gap-x-4 overflow-y-auto"
+              >
+                {STATUSES.map((status) => (
+                  <IssueList
+                    key={status}
+                    status={status}
+                    issues={filterIssues(fakeIssues, status)}
+                  />
+                ))}
+              </div>
+            </DragDropContext>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </Fragment>
   );
 };
@@ -171,15 +359,15 @@ function getAfterDropPrevNextIssue(props: IssueListPositionProps) {
 
   const afterDropDestinationIssues = isSameList
     ? moveItemWithinArray(
-        beforeDropDestinationIssues,
-        droppedIssue,
-        destination.index
-      )
+      beforeDropDestinationIssues,
+      droppedIssue,
+      destination.index
+    )
     : insertItemIntoArray(
-        beforeDropDestinationIssues,
-        droppedIssue,
-        destination.index
-      );
+      beforeDropDestinationIssues,
+      droppedIssue,
+      destination.index
+    );
 
   return {
     prevIssue: afterDropDestinationIssues[destination.index - 1],
@@ -188,9 +376,9 @@ function getAfterDropPrevNextIssue(props: IssueListPositionProps) {
 }
 
 function getSortedBoardIssues({
-  activeIssues,
-  status,
-}: {
+                                activeIssues,
+                                status,
+                              }: {
   activeIssues: IssueType[];
   status: IssueStatus;
 }) {

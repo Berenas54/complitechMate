@@ -11,7 +11,9 @@ export const projectRoutes = {
       `${baseUrl}/api/project`
     );
     console.log(data,"data")
-    return data?.project;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    // @ts-ignore
+    return data?.project? data?.project[0] :data.project;
   },
   getMembers: async ({ project_id }: { project_id: string }) => {
     const { data } = await axios.get<GetProjectMembersResponse>(

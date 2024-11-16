@@ -1,7 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { BacklogIcon, BoardIcon, DevelopmentIcon, RoadmapIcon } from "./svgs";
+import { BacklogIcon, BoardIcon, DevelopmentIcon, RoadmapIcon, ProjectIcon } from "./svgs";
+import Image from "next/image";
+import Projects from "@/public/Frame.svg"
 import {
   NavigationMenu,
   NavigationMenuLink,
@@ -10,6 +12,7 @@ import {
 import { usePathname } from "next/navigation";
 import { FaChessPawn, FaChevronRight } from "react-icons/fa";
 import { useProject } from "@/hooks/query-hooks/use-project";
+import Complimate from "@/public/из люстры_2.svg";
 
 type NavItemType = {
   id: string;
@@ -39,6 +42,12 @@ const Sidebar: React.FC = () => {
       label: "Board",
       icon: BoardIcon,
       href: `/project/board`,
+    },
+    {
+      id: "projects",
+      label: "Projects",
+      icon: ProjectIcon,
+      href: `/project/projects`,
     },
   ];
 

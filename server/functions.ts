@@ -110,13 +110,13 @@ export async function getInitialSprintsFromServer(
 export async function initProject() {
   await prisma.project.upsert({
     where: {
-      id: "init-project-id-dq8yh-d0as89hjd",
+      id: "Prisma_Studio_asd",
     },
     update: {},
     create: {
-      id: "init-project-id-dq8yh-d0as89hjd",
-      name: "Jira Clone Project",
-      key: "JIRA-CLONE",
+      id: "init-project-id-dqsdasd8yh-d0as89hjd",
+      name: "Prisma Studio",
+      key: "Prisma Studios sd",
     },
   });
 }
